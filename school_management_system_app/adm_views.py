@@ -3,8 +3,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import StaffDetail, StudentDetail, ClassTeacher, DisciplinaryIssue, CharacterCertificate, Course
-from .forms import StaffRegistrationForm, StdRegistration, AddCourse, ClassTeacherRegistrationForm, DisciplinaryIssueform, CharacterCertificateForm
+from .models import StaffDetail, StudentDetail, ClassLecture, DisciplinaryIssue, CharacterCertificate, Course
+from .forms import StaffRegistrationForm, StdRegistration, AddCourse, ClassLectureRegistrationForm, DisciplinaryIssueform, CharacterCertificateForm
 from .filters import StaffFilter, StudentFilter
 from django.core.paginator import Paginator
 from django.http import HttpResponse
@@ -110,22 +110,22 @@ def adm_home(request):
 
 # Add class teacher
 @login_required
-def add_class_teacher(request):
+def add_class_lecture(request):
     if request.method == 'POST':
-        form = ClassTeacherRegistrationForm(request.POST or None, request.FILES)
+        form = ClassLectureRegistrationForm(request.POST or None, request.FILES)
         if form.is_valid():
             add_teacher = form.save(commit=False)
             add_teacher.user = request.user
             form.save()
-            messages.success(request, 'Class Teacher Registered Successfully!')
+            messages.success(request, 'Class Lecture Registered Successfully!')
             return render(request, 'administrator/add_class_teacher.html', {'form':form})
         else:
             messages.error(request,
-                           'Could not add the Class Teacher.Try Again!.')
-            return render(request, 'administrator/add_class_teacher.html', {'form': form})
+                           'Could not add the Class Lecture.Try Again!.')
+            return render(request, 'administrator/add_class_lecture.html', {'form': form})
     else:
-        form = ClassTeacherRegistrationForm()
-    return render(request, 'administrator/add_class_teacher.html', {'form':form})
+        form = ClassLectureRegistrationForm()
+    return render(request, 'administrator/add_class_lecture.html', {'form':form})
 
 # Add course
 @login_required
@@ -137,7 +137,7 @@ def add_course(request):
             messages.success(request, 'Course added successfully!')
             return render(request, 'administrator/add_course.html', {'form':form})
         else:
-            messages.error(request, 'Couldnot add the course. Try again!')
+            messages.error(request, 'Could not add the course. Try again!')
             return render(request, 'administrator/add_course.html', {'form':form})
     else:
         form = AddCourse()
@@ -159,16 +159,16 @@ def del_course(request, id):
 
 #Class Teacher Detail
 @login_required
-def class_teacher(request):
-    class_teacher = ClassTeacher.objects.all()
-    return render(request, 'administrator/class_teacher.html', {'class_teacher':class_teacher})
+def class_lecture(request):
+    class_lecture = ClassLecture.objects.all()
+    return render(request, 'administrator/class_teacher.html', {'class_lecture':class_lecture})
 
 # Delete class Teacher
 @login_required
-def delete_class_teacher(request, Emp_id):
-    class_teacher = get_object_or_404(ClassTeacher, pk=Emp_id)
-    class_teacher.delete()
-    return redirect('class_teacher')
+def delete_class_lecture(request, Emp_id):
+    class_lecture = get_object_or_404(ClassLecture, pk=Emp_id)
+    class_lecture.delete()
+    return redirect('class_lecture')
 
 
 # Add Staff
@@ -288,7 +288,7 @@ def delete_adm(request, Emp_id):
 
 # Teacher home page
 @login_required
-def teacher(request):
+def lecture(request):
     male = StaffDetail.objects.filter(category='Teaching Staff', gender='Male')
     female = StaffDetail.objects.filter(
         category='Teaching Staff', gender='Female')
@@ -698,7 +698,7 @@ def edit_std_ten(request, std_code):
 def delete_std_ten(request, std_code):
     std = get_object_or_404(StudentDetail, pk=std_code)
     std.delete()
-    return redirect('ten')
+    return redirect('10')
 
 # class eleven home page
 @login_required

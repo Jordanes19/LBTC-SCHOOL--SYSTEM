@@ -67,17 +67,16 @@ class Course(models.Model):
 # Class teacher
 
 
-class ClassTeacher(models.Model):
+class ClassLecture(models.Model):
     name = models.ForeignKey(StaffDetail, on_delete=models.CASCADE)
 
-    seven = '7'
-    eight = '8'
-    nine = '9'
-    ten = '10'
-    eleven = '11'
-    twelve = '12'
-    class_choices = [(seven, '7'), (eight, '8'), (nine, '9'),
-                     (ten, '10'), (eleven, '11'), (twelve, '12')]
+    diploma = '5'
+    technician = '4'
+    craft = '3'
+    certificate = '2'
+    trade = '1'
+    class_choices = [(trade, '1'), (certificate, '2'),
+                     (craft, '3'), (technician, '4'), (diploma, '5')]
     standard = models.CharField(choices=class_choices, max_length=30)
 
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
@@ -105,14 +104,14 @@ class StudentDetail(models.Model):
     GENDER_CHOICES = [(GENDER_MALE, 'Male'), (GENDER_FEMALE, 'Female')]
     gender = models.CharField(choices=GENDER_CHOICES, max_length=30)
 
-    seven = '7'
-    eight = '8'
-    nine = '9'
-    ten = '10'
-    eleven = '11'
-    twelve = '12'
-    class_choices = [(seven, '7'), (eight, '8'), (nine, '9'),
-                     (ten, '10'), (eleven, '11'), (twelve, '12')]
+    diploma = '5'
+    technician  = '4'
+    craft = '3'
+    certificate = '2'
+    trade = '1'
+
+    class_choices = [(trade, '1'), (certificate, '2'),
+                     (craft, '3'), (technician, '4'), (diploma, '5')]
     standard = models.CharField(choices=class_choices, max_length=30)
 
     A = 'A'
@@ -133,9 +132,9 @@ class StudentDetail(models.Model):
     email = models.EmailField(blank=True, unique=True)
     CID = models.CharField(max_length=11, unique=True, blank=True)
     class_teacher = models.ForeignKey(
-        ClassTeacher, null=True, on_delete=models.SET_NULL)
+        ClassLecture, null=True, on_delete=models.SET_NULL)
     previous_school = models.CharField(max_length=50, blank=True)
-    mobile_number = models.CharField(max_length=8, blank=True)
+    mobile_number = models.CharField(max_length=9, blank=True)
     permanent_address = models.TextField(blank=True)
     proctor_master = models.ForeignKey(
         StaffDetail, null=True, on_delete=models.SET_NULL)
@@ -161,7 +160,7 @@ class StudentDetail(models.Model):
         return '%s %s %s' % (self.name, self.standard, self.section)
 
 
-# Student Disciplinary Isuue
+# Student Disciplinary Issue
 class DisciplinaryIssue(models.Model):
     Student = models.ForeignKey(
         StudentDetail, null=True, on_delete=models.CASCADE)
@@ -184,14 +183,14 @@ class CharacterCertificate(models.Model):
     Volunteerism = 'Volunteerism'
     Academic = 'Academic'
     Games_Sports = 'Games and Sports'
-    Literary = 'Literary'
+    Leadership = 'Student Union'
     Cultural = 'Cultural'
     Category_choices = [
         (Special_Recognization, 'Special_Recognition'),
         (Volunteerism, 'Volunteerism'),
         (Academic, 'Academic'),
         (Games_Sports, 'Games and Sports'),
-        (Literary, 'Literary'),
+        (Leadership, 'Student Union'),
         (Cultural, 'Cultural')
     ]
     Category = models.CharField(choices=Category_choices, max_length=30)

@@ -1,6 +1,6 @@
 from django.forms import *
 from django.core.exceptions import ValidationError
-from .models import StaffDetail, StudentDetail, ClassTeacher, DisciplinaryIssue, CharacterCertificate, Course
+from .models import StaffDetail, StudentDetail, ClassLecture, DisciplinaryIssue, CharacterCertificate, Course
 from django import forms
 
 # Staff Registration form
@@ -71,15 +71,15 @@ class StaffRegistrationForm(forms.ModelForm):
                        }),
             'contact_number': forms.TextInput(
                 attrs={'class': 'form-control',
-                       'placeholder': 'Enter 8 digit mobile number'
+                       'placeholder': 'Enter 9 digit mobile number'
                        }),
             'email': forms.EmailInput(
                 attrs={'class': 'form-control',
-                       'placeholder': '.....@education.gov.bt'
+                       'placeholder': '.....@gmail.com'
                        }),
             'permanent_address': forms.Textarea(
                 attrs={'rows': 3, 'cols': 80, 'class': 'form-control',
-                       'placeholder': 'Enter your permanent address: village, Gewog, Dzongkhag'
+                       'placeholder': 'Enter your permanent address: town, chalala, Lusaka'
                        }),
             'profile_pic': forms.FileInput(
                 attrs={'class': 'form-control'})
@@ -94,23 +94,23 @@ class StaffRegistrationForm(forms.ModelForm):
 
     def clean_contact_number(self):
         phone = self.cleaned_data.get('contact_number')
-        if len(phone) != 8:
-            raise forms.ValidationError("Mobile number should have 8 digits.")
+        if len(phone) != 9:
+            raise forms.ValidationError("Mobile number should have 9 digits.")
         return phone
 
     def clean_email(self):
         email = self.cleaned_data.get("email")
         if "@education.gov.bt" not in email:
             raise forms.ValidationError(
-                "We accept only education mail address.")
+                "We accept only persornal mail address.")
         return email
 
 # Class teacher registration
 
 
-class ClassTeacherRegistrationForm(forms.ModelForm):
+class ClassLectureRegistrationForm(forms.ModelForm):
     class Meta:
-        model = ClassTeacher
+        model = ClassLecture
         fields = [
             'name', 'standard', 'section', 'course'
         ]
@@ -186,7 +186,7 @@ class StdRegistration(forms.ModelForm):
                        }),
             'email': forms.EmailInput(
                 attrs={'class': 'form-control',
-                       'placeholder': '.....@education.gov.bt'
+                       'placeholder': '.....@gmail.com'
                        }),
             'CID': forms.TextInput(
                 attrs={'class': 'form-control',
@@ -200,7 +200,7 @@ class StdRegistration(forms.ModelForm):
                        }),
             'mobile_number': forms.TextInput(
                 attrs={'class': 'form-control',
-                       'placeholder': 'Enter 8 digit mobile number'
+                       'placeholder': 'Enter 9 digit mobile number'
                        }),
             'permanent_address': forms.Textarea(
                 attrs={'rows': 3, 'cols': 80, 'class': 'form-control',
@@ -236,7 +236,7 @@ class StdRegistration(forms.ModelForm):
                        }),
             'parents_mobile_number': forms.TextInput(
                 attrs={'class': 'form-control',
-                       'placeholder': 'Enter 8 digit mobile number'
+                       'placeholder': 'Enter 9 digit mobile number'
                        }),
         }
 
@@ -261,29 +261,29 @@ class StdRegistration(forms.ModelForm):
 
     def clean_mobile_number(self):
         phone = self.cleaned_data.get('mobile_number')
-        if len(phone) != 8:
+        if len(phone) != 9:
             raise forms.ValidationError("Mobile number should have 8 digits.")
         return phone
 
     def clean_parents_mobile_number(self):
         phone = self.cleaned_data.get('parents_mobile_number')
-        if len(phone) != 8:
+        if len(phone) != 9:
             raise forms.ValidationError("Mobile number should have 8 digits.")
         return phone
 
     def clean_email(self):
         email = self.cleaned_data.get("email")
-        if "@education.gov.bt" not in email:
+        if "@gmail.com" not in email:
             raise forms.ValidationError(
-                "We accept only education mail address(xyz@education.gov.bt).")
+                "We accept only personal mail address(xyz@gmail.com).")
         return email
 
-    def clean_class_teacher(self):
-        class_teacher = self.cleaned_data.get("class_teacher")
-        if class_teacher == " ":
+    def clean_class_lecture(self):
+        class_lecture = self.cleaned_data.get("class_teacher")
+        if class_lecture == " ":
             raise forms.ValidationError(
                 "fields cannot be left blank")
-        return class_teacher
+        return class_lecture
 
 # Disciplinary issue Form
 
